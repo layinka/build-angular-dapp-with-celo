@@ -1,0 +1,99 @@
+<div class="row">
+    <div class="col-12" *ngIf="!auction && !nftMetadata">Loading ...</div>
+    <div class="col" *ngIf="auction || nftMetadata">
+        <div class="card">
+
+            
+
+            <div *ngIf="auction" class="text-center">
+                <img *ngIf="nftMetadata"  [src]="nftMetadata.image" class="img-fluid "  />
+                <img *ngIf="!nftMetadata"  src="https://place-hold.it/480??text=NFT" class="img-fluid text-center" style="max-width: 560px;"/>
+
+                <dl>
+                    <dt>Seller</dt>
+                    <dd class="mb-3">{{auction._seller}} </dd>
+
+                    <dt>NFT</dt>
+                    <dd class="mb-3">{{auction._nft}}</dd>
+
+                    <dt>Token Id</dt>
+                    <dd class="mb-3">{{auction._nftId}}</dd>
+
+                    <dt>Status</dt>
+                    <dd class="mb-3">
+                        <div>
+                            <b>Started : </b> 
+                            <span *ngIf="!auction._started">No</span> 
+                            <span *ngIf="auction._started">Yes</span> 
+                            
+
+                            <b class="ms-3">Ended : </b> 
+                            <span *ngIf="!auction._ended">No</span> 
+                            <span *ngIf="auction._ended">Yes</span> 
+
+                            <button  class="btn btn-primary ms-4" *ngIf="!auction._started && auction._seller == account" (click)="startAuction()">Start</button>
+
+                            <button  class="btn btn-primary ms-4" *ngIf="auction._started && auction._seller == account && !auction._ended" (click)="endAuction()">End</button>
+                        </div>
+
+                    </dd>
+
+                    <dt>Current Bid</dt>
+                    <dd class="mb-3">
+                        <div >
+                            <b *ngIf="ZERO_ADDRESS != auction._highestBidder"><small>{{formatToEther(auction._highestBid) | number: '1.0-8'}} CELO ({{auction._highestBidder}})</small> </b>
+
+                            <b *ngIf="ZERO_ADDRESS == auction._highestBidder"><small>No Bids yet! Be the first to bid</small> </b>
+
+                            <br/>
+
+                            
+                            
+                            
+                        </div>
+
+                    </dd>
+                </dl>
+
+                <div class="card card-default card-primary m-4 px-4 py-4" *ngIf="auction._started && !auction._ended && auction._seller != account">
+                    <div class="card-header">
+                        <h3>Make a bid</h3>
+                    </div>
+                    <div class="card-body">
+                        <form class="form mt-4" [formGroup]="mainFormGroup" (ngSubmit)="bid()">
+                                
+                            <div class="form-group">
+                                <label>Bid Price</label>
+                                <input type="number" class="form-control" formControlName="bid">
+                                <span class="text-danger"
+                                    *ngIf="(f.bid.touched ) && f.bid.errors?.required">
+                                    Bid Price is required
+                                </span>
+                                <span class="text-danger"
+                                    *ngIf="f.bid.touched && f.bid.errors?.min">
+                                    Bid Price must be at least 0
+                                </span>
+                                <span class="text-danger"
+                                    *ngIf="f.bid.touched && f.bid.errors?.min">
+                                    Bid Price must be at most 100,000,000
+                                </span>
+                            </div>
+                            
+                            <div class="form-group my-4">
+                                <button type="submit"  [disabled]="mainFormGroup.invalid" class="btn btn-success">Bid</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

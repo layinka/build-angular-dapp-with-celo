@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col">
+        <div class="card ">
+            <div class="card-header">
+                <h3>All Auctions</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 col-md-3 m-2" *ngFor="let auction of auctions">
+                        <div class="card">
+                            <div class="card-body" [routerLink]= "['/view-auction', auction.id]">
+                                <img *ngIf="auction.nftMetadata" [src]="auction.nftMetadata.image" class="img-fluid " />
+                                <img *ngIf="!auction.nftMetadata" src="https://place-hold.it/480?text=NFT" class="img-fluid " />
+
+                                <div class="text-center">
+                                    <dl>
+                                        <dt>Seller</dt>
+                                        <dd class="mb-3">{{auction._seller}} </dd>
+                    
+                                        <dt>NFT</dt>
+                                        <dd class="mb-3">{{auction._nft}}</dd>
+                    
+                                        <dt>Token Id</dt>
+                                        <dd class="mb-3">{{auction._nftId}}</dd>
+                    
+                                        <dt>Status</dt>
+                                        <dd class="mb-3">
+                                            <div>
+                                                <b>Started : </b> 
+                                                <span *ngIf="!auction._started">No</span> 
+                                                <span *ngIf="auction._started">Yes</span> 
+                                                
+                    
+                                                <b class="ms-3">Ended : </b> 
+                                                <span *ngIf="!auction._ended">No</span> 
+                                                <span *ngIf="auction._ended">Yes</span> 
+                    
+                                            </div>
+                    
+                                        </dd>
+                    
+                                        <dt>Current Bid</dt>
+                                        <dd class="mb-3">
+                                            <div >
+                                                <b *ngIf="ZERO_ADDRESS != auction._highestBidder"><small>{{formatToEther(auction._highestBid) | number: '1.0-8'}} CELO ({{auction._highestBidder}})</small> </b>
+                    
+                                                <b *ngIf="ZERO_ADDRESS == auction._highestBidder"><small>No Bids yet! Be the first to bid</small> </b>
+                    
+                                                <br/>
+                    
+                                                
+                                                
+                                                
+                                            </div>
+                    
+                                        </dd>
+                                    </dl>
+                    
+                                    
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
